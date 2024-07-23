@@ -4,13 +4,20 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
-#@onready var camera: Camera3D = $Camera3D
+@export var mouse_sensitivity: float = 0.005
+
+## How much mouse has moved last frame, adjusted to how much camera should move
+var mouse_motion: Vector2 = Vector2.ZERO
+
+@onready var camera: Camera3D = $Camera3D
 #
-#func _ready() -> void:
+func _ready() -> void:
 	#camera.make_current()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 
 func _physics_process(delta: float) -> void:
+	handle_camera_rotation()
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -31,3 +38,23 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		mouse_motion = -event.relative * mouse_sensitivity
+	if event.is_action_pressed("ui_cancel"):
+		toggle_mouse_capture()
+
+func toggle_mouse_capture() -> void:
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+func handle_camera_rotation() -> void:
+	if not Input.mouse_mode == Input.MOUSE_MODE_CAPTURED: return
+	rotate_y(mouse_motion.x)
+	camera.rotate_x(mouse_motion.y)
+	# needs to be reset because _input is never called when mouse doesn't move, 
+	# so it's never set to zero when mouse is not moving
+	mouse_motion = Vector2.ZERO

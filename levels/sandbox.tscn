@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=9 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
 
@@ -15,6 +15,21 @@ sky = SubResource("Sky_sp8w0")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_xumr8"]
+colors = PackedColorArray(0.0745098, 0.298039, 0.0980392, 1, 0.584314, 1, 0.611765, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rihg7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hhv8u"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_xumr8")
+noise = SubResource("FastNoiseLite_rihg7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmjep"]
+albedo_texture = SubResource("NoiseTexture2D_hhv8u")
+
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -26,6 +41,7 @@ shadow_enabled = true
 
 [node name="Floor" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("StandardMaterial3D_fmjep")
 use_collision = true
 size = Vector3(64, 1, 64)
 
