@@ -9,8 +9,8 @@ const JUMP_VELOCITY = 4.5
 ## How much mouse has moved last frame, adjusted to how much camera should move
 var mouse_motion: Vector2 = Vector2.ZERO
 
-@onready var camera: Camera3D = $Camera3D
-#
+@onready var camera_pivot: Node3D = $CameraPivot
+
 func _ready() -> void:
 	#camera.make_current()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -54,7 +54,8 @@ func toggle_mouse_capture() -> void:
 func handle_camera_rotation() -> void:
 	if not Input.mouse_mode == Input.MOUSE_MODE_CAPTURED: return
 	rotate_y(mouse_motion.x)
-	camera.rotate_x(mouse_motion.y)
+	camera_pivot.rotate_x(mouse_motion.y)
+	camera_pivot.rotation_degrees.x = clampf(camera_pivot.rotation_degrees.x, -90, 90)
 	# needs to be reset because _input is never called when mouse doesn't move, 
 	# so it's never set to zero when mouse is not moving
 	mouse_motion = Vector2.ZERO

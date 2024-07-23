@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=14 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
 
@@ -27,8 +27,34 @@ seamless = true
 color_ramp = SubResource("Gradient_xumr8")
 noise = SubResource("FastNoiseLite_rihg7")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kmumu"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_reu5u"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_kmumu")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmjep"]
 albedo_texture = SubResource("NoiseTexture2D_hhv8u")
+normal_enabled = true
+normal_scale = 6.0
+normal_texture = SubResource("NoiseTexture2D_reu5u")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0urrb"]
+blend_mode = 3
+
+[sub_resource type="Gradient" id="Gradient_fi5fr"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.285714, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0.593134, 0.593134, 0.593134, 0.717647)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w0as0"]
+gradient = SubResource("Gradient_fi5fr")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Node3D" type="Node3D"]
 
@@ -50,3 +76,13 @@ transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 
 
 [node name="Player" parent="." instance=ExtResource("1_r6gyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_0urrb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_w0as0")
