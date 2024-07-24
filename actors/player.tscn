@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck0u5t08sjghc"]
+[gd_scene load_steps=6 format=3 uid="uid://ck0u5t08sjghc"]
 
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
+[ext_resource type="Script" path="res://actors/crosshair.gd" id="3_d4bmt"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
 
@@ -24,3 +25,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 top_level = true
 current = true
 script = ExtResource("2_tf2t2")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="Control" parent="CenterContainer"]
+layout_mode = 2
+script = ExtResource("3_d4bmt")

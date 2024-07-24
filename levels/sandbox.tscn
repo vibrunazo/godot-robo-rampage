@@ -77,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 
 [node name="Player" parent="." instance=ExtResource("1_r6gyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TexVignette" type="TextureRect" parent="."]
 material = SubResource("CanvasItemMaterial_0urrb")
 anchors_preset = 15
 anchor_right = 1.0
