@@ -2,9 +2,10 @@ extends CharacterBody3D
 
 
 const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+@export var jump_height: float = 1
 
 @export var mouse_sensitivity: float = 0.005
+@export var fall_multiplier: float = 2.0
 
 ## How much mouse has moved last frame, adjusted to how much camera should move
 var mouse_motion: Vector2 = Vector2.ZERO
@@ -20,11 +21,15 @@ func _physics_process(delta: float) -> void:
 	handle_camera_rotation()
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		if velocity.y > 0:
+			velocity += get_gravity() * delta
+		else:
+			velocity += get_gravity() * delta * fall_multiplier
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		var jump_velocity: float = sqrt(jump_height * 2 * get_gravity().length())
+		velocity.y = jump_velocity
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.

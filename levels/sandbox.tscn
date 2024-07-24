@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=15 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
 
@@ -16,7 +16,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_xumr8"]
-colors = PackedColorArray(0.0745098, 0.298039, 0.0980392, 1, 0.584314, 1, 0.611765, 1)
+colors = PackedColorArray(0.0745098, 0.298039, 0.0980392, 1, 0.261, 0.45, 0.2736, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rihg7"]
 
@@ -37,11 +37,25 @@ as_normal_map = true
 noise = SubResource("FastNoiseLite_kmumu")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmjep"]
+albedo_color = Color(0.804742, 0.804743, 0.804742, 1)
 albedo_texture = SubResource("NoiseTexture2D_hhv8u")
+metallic = 0.2
+roughness = 0.5
 normal_enabled = true
-normal_scale = 6.0
+normal_scale = 3.0
 normal_texture = SubResource("NoiseTexture2D_reu5u")
-uv1_scale = Vector3(10, 10, 10)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lnn4t"]
+albedo_texture = SubResource("NoiseTexture2D_hhv8u")
+metallic = 0.2
+roughness = 0.5
+normal_enabled = true
+normal_scale = 3.0
+normal_texture = SubResource("NoiseTexture2D_reu5u")
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0urrb"]
 blend_mode = 3
@@ -67,9 +81,31 @@ shadow_enabled = true
 
 [node name="Floor" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-material_override = SubResource("StandardMaterial3D_fmjep")
 use_collision = true
 size = Vector3(64, 1, 64)
+material = SubResource("StandardMaterial3D_fmjep")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 1, -8.5)
+size = Vector3(12, 1, 12)
+material = SubResource("StandardMaterial3D_lnn4t")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.25, 2.5)
+size = Vector3(7, 1.5, 4)
+material = SubResource("StandardMaterial3D_lnn4t")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 2, -8.5)
+size = Vector3(6, 1, 12)
+material = SubResource("StandardMaterial3D_lnn4t")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Floor"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 4.5, 1, -8.5)
+operation = 2
+polygon = PackedVector2Array(-2, -0.5, -3, 2, 2.5, 0.7, -0.1, -0.6)
+depth = 4.0
+material = SubResource("StandardMaterial3D_fmjep")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 10, 26)
