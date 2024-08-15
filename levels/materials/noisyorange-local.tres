@@ -1,0 +1,35 @@
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://bt58i1k0teeky"]
+
+[ext_resource type="FastNoiseLite" uid="uid://ceytmqalv7imp" path="res://levels/materials/noise2.tres" id="1_v36nk"]
+
+[sub_resource type="Gradient" id="Gradient_vgxcm"]
+colors = PackedColorArray(0.43, 0.21844, 0.1204, 1, 0.866667, 0.603922, 0.27451, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hkx03"]
+width = 1024
+height = 1024
+color_ramp = SubResource("Gradient_vgxcm")
+noise = ExtResource("1_v36nk")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_reu5u"]
+width = 1024
+height = 1024
+seamless_blend_skirt = 0.3
+as_normal_map = true
+noise = ExtResource("1_v36nk")
+
+[sub_resource type="Gradient" id="Gradient_aek8w"]
+colors = PackedColorArray(0.288518, 0.288518, 0.288518, 1, 1, 1, 1, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fauru"]
+color_ramp = SubResource("Gradient_aek8w")
+noise = ExtResource("1_v36nk")
+
+[resource]
+albedo_texture = SubResource("NoiseTexture2D_hkx03")
+metallic = 0.2
+roughness_texture = SubResource("NoiseTexture2D_fauru")
+normal_enabled = true
+normal_scale = 3.0
+normal_texture = SubResource("NoiseTexture2D_reu5u")
+uv1_triplanar = true

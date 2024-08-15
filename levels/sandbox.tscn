@@ -1,6 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=16 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
+[ext_resource type="Script" path="res://ui/fps_counter.gd" id="2_2hdwh"]
+[ext_resource type="Material" uid="uid://dpuwbvneg7k23" path="res://levels/materials/noisygreen1.tres" id="2_ddx3l"]
+[ext_resource type="Material" uid="uid://bv625k3vb3dv6" path="res://levels/materials/noisyorange.tres" id="3_3lnbn"]
+[ext_resource type="Material" uid="uid://j7mxram1v3pk" path="res://levels/materials/noisydark.tres" id="5_wqco1"]
+[ext_resource type="PackedScene" uid="uid://bpxywbbmowltj" path="res://actors/moving_platform.tscn" id="7_hdubb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_53tha"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -14,48 +19,14 @@ background_mode = 2
 sky = SubResource("Sky_sp8w0")
 tonemap_mode = 2
 glow_enabled = true
-
-[sub_resource type="Gradient" id="Gradient_xumr8"]
-colors = PackedColorArray(0.0745098, 0.298039, 0.0980392, 1, 0.261, 0.45, 0.2736, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_rihg7"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hhv8u"]
-width = 1024
-height = 1024
-seamless = true
-color_ramp = SubResource("Gradient_xumr8")
-noise = SubResource("FastNoiseLite_rihg7")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_kmumu"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_reu5u"]
-width = 1024
-height = 1024
-seamless = true
-as_normal_map = true
-noise = SubResource("FastNoiseLite_kmumu")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmjep"]
-albedo_color = Color(0.804742, 0.804743, 0.804742, 1)
-albedo_texture = SubResource("NoiseTexture2D_hhv8u")
-metallic = 0.2
-roughness = 0.5
-normal_enabled = true
-normal_scale = 3.0
-normal_texture = SubResource("NoiseTexture2D_reu5u")
-uv1_triplanar = true
-uv1_world_triplanar = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lnn4t"]
-albedo_texture = SubResource("NoiseTexture2D_hhv8u")
-metallic = 0.2
-roughness = 0.5
-normal_enabled = true
-normal_scale = 3.0
-normal_texture = SubResource("NoiseTexture2D_reu5u")
-uv1_triplanar = true
-uv1_world_triplanar = true
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.4026, 0.482103, 0.61, 1)
+fog_sun_scatter = 1.0
+fog_density = 0.7
+fog_aerial_perspective = 0.674
+fog_depth_begin = 2.0
+fog_depth_end = 40.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0urrb"]
 blend_mode = 3
@@ -70,6 +41,22 @@ gradient = SubResource("Gradient_fi5fr")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="LabelSettings" id="LabelSettings_ofvlv"]
+font_size = 20
+font_color = Color(0.91924, 0.98, 0.3724, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Curve" id="Curve_wnwe8"]
+_data = [Vector2(0, 0.428571), 0.0, 0.0, 0, 0, Vector2(0.994506, 0.89011), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_rrs46"]
+radius = 1.0
+radial_steps = 16
+sections = 20
+curve = SubResource("Curve_wnwe8")
+
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -79,46 +66,199 @@ environment = SubResource("Environment_qobmm")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Floor" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-use_collision = true
-size = Vector3(64, 1, 64)
-material = SubResource("StandardMaterial3D_fmjep")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 1, -8.5)
-size = Vector3(12, 1, 12)
-material = SubResource("StandardMaterial3D_lnn4t")
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 1.25, 2.5)
-size = Vector3(7, 1.5, 4)
-material = SubResource("StandardMaterial3D_lnn4t")
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 2, -8.5)
-size = Vector3(6, 1, 12)
-material = SubResource("StandardMaterial3D_lnn4t")
-
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Floor"]
-transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 4.5, 1, -8.5)
-operation = 2
-polygon = PackedVector2Array(-2, -0.5, -3, 2, 2.5, 0.7, -0.1, -0.6)
-depth = 4.0
-material = SubResource("StandardMaterial3D_fmjep")
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 10, 26)
 
 [node name="Player" parent="." instance=ExtResource("1_r6gyw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="TexVignette" type="TextureRect" parent="."]
-material = SubResource("CanvasItemMaterial_0urrb")
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TexVignette" type="TextureRect" parent="UI"]
+material = SubResource("CanvasItemMaterial_0urrb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_w0as0")
+
+[node name="FPSCounter" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 8.0
+offset_right = 60.0
+offset_bottom = 31.0
+text = "60 fps"
+label_settings = SubResource("LabelSettings_ofvlv")
+script = ExtResource("2_2hdwh")
+
+[node name="LevelObjects" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(64, 1, 64)
+material = ExtResource("2_ddx3l")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.5, -8.5)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="LevelObjects/CSGBox3D"]
+transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -4, 0, 0)
+operation = 2
+polygon = PackedVector2Array(-2, -0.5, -3, 2, 2.5, 0.7, -0.1, -0.6)
+depth = 4.0
+material = ExtResource("2_ddx3l")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.75, 2.5)
+use_collision = true
+size = Vector3(7, 1.5, 4)
+material = ExtResource("3_3lnbn")
+
+[node name="MovingPlatform" parent="LevelObjects" node_paths=PackedStringArray("end_pos_node") instance=ExtResource("7_hdubb")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23, 4.5, -7.5)
+end_pos_node = NodePath("EndPoint")
+
+[node name="EndPoint" type="Node3D" parent="LevelObjects/MovingPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+
+[node name="MovingPlatform2" parent="LevelObjects" node_paths=PackedStringArray("end_pos_node") instance=ExtResource("7_hdubb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -19)
+end_pos_node = NodePath("EndPoint")
+
+[node name="EndPoint" type="Node3D" parent="LevelObjects/MovingPlatform2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+
+[node name="MovingPlatform3" parent="LevelObjects" node_paths=PackedStringArray("end_pos_node") instance=ExtResource("7_hdubb")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 17.5, 0, -9)
+end_pos_node = NodePath("EndPoint")
+
+[node name="EndPoint" type="Node3D" parent="LevelObjects/MovingPlatform3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+
+[node name="MovingPlatform4" parent="LevelObjects" node_paths=PackedStringArray("end_pos_node") instance=ExtResource("7_hdubb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 7.5)
+end_pos_node = NodePath("EndPoint")
+
+[node name="EndPoint" type="Node3D" parent="LevelObjects/MovingPlatform4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, 0)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, 20.5)
+use_collision = true
+size = Vector3(10, 5, 15)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 25)
+use_collision = true
+size = Vector3(12, 5, 6)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="LevelObjects/CSGBox3D9"]
+transform = Transform3D(0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, -1, 2, 0)
+operation = 2
+use_collision = true
+size = Vector3(20, 5, 4)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, 1)
+use_collision = true
+size = Vector3(10, 5, 16)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 2.5, 1.5)
+use_collision = true
+size = Vector3(10, 5, 15)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="LevelObjects/CSGBox3D7"]
+transform = Transform3D(-3.78552e-08, 2.18557e-08, -1, 0.5, 0.866025, 0, 0.866025, -0.5, -4.37114e-08, 3, 3.29904, -4.25)
+operation = 2
+use_collision = true
+size = Vector3(20, 8, 4)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 2.5, 20.5)
+use_collision = true
+size = Vector3(10, 5, 15)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 11)
+use_collision = true
+size = Vector3(52, 1, 4)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 4.5, 25)
+use_collision = true
+size = Vector3(20, 1, 6)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 4.5, -24.5)
+use_collision = true
+size = Vector3(28, 1, 5)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, -19.5)
+use_collision = true
+size = Vector3(10, 5, 15)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -19, 2.5, -22.5)
+use_collision = true
+size = Vector3(10, 5, 14)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 5, 11)
+use_collision = true
+size = Vector3(10, 10, 8)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="LevelObjects/CSGBox3D14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+operation = 2
+use_collision = true
+size = Vector3(4, 9, 8)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="LevelObjects/CSGBox3D14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.74846e-07)
+operation = 2
+use_collision = true
+size = Vector3(4, 10, 4)
+material = ExtResource("5_wqco1")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 1.5, -8.5)
+use_collision = true
+size = Vector3(6, 1, 12)
+material = ExtResource("3_3lnbn")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="LevelObjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 6)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_rrs46")
