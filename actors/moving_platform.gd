@@ -21,7 +21,6 @@ func _ready() -> void:
 	is_ready = true
 	
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	if not is_ready: return

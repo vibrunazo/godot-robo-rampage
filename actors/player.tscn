@@ -7,16 +7,21 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ubg2j"]
-
 [sub_resource type="PrismMesh" id="PrismMesh_pih1j"]
 size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ubg2j"]
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_gevwp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_gbndv")
+
+[node name="FrontIndicator" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.551017)
+mesh = SubResource("PrismMesh_pih1j")
+script = ExtResource("4_63tsh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ubg2j")
@@ -49,8 +54,3 @@ grow_vertical = 2
 [node name="Crosshair" type="Control" parent="CenterContainer"]
 layout_mode = 2
 script = ExtResource("3_d4bmt")
-
-[node name="FrontIndicator" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.551017)
-mesh = SubResource("PrismMesh_pih1j")
-script = ExtResource("4_63tsh")
