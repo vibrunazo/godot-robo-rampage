@@ -12,7 +12,7 @@
 [sub_resource type="PrismMesh" id="PrismMesh_pih1j"]
 size = Vector3(0.2, 0.2, 0.2)
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_gevwp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
