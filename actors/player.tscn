@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ck0u5t08sjghc"]
+[gd_scene load_steps=9 format=3 uid="uid://ck0u5t08sjghc"]
 
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
 [ext_resource type="Script" path="res://actors/crosshair.gd" id="3_d4bmt"]
+[ext_resource type="PackedScene" uid="uid://c7w8j7ys0etm5" path="res://actors/weapons/SMG.tscn" id="4_3lmw0"]
 [ext_resource type="Script" path="res://actors/hide_me.gd" id="4_63tsh"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
@@ -19,7 +20,7 @@ script = ExtResource("1_gevwp")
 mesh = SubResource("CapsuleMesh_gbndv")
 
 [node name="FrontIndicator" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.551017)
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0.3, -0.551)
 mesh = SubResource("PrismMesh_pih1j")
 script = ExtResource("4_63tsh")
 
@@ -34,6 +35,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 top_level = true
 current = true
 script = ExtResource("2_tf2t2")
+
+[node name="HitscanWeapon" parent="CameraPivot/SmoothCamera" instance=ExtResource("4_3lmw0")]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
