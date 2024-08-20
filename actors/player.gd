@@ -7,7 +7,15 @@ const SPEED = 5.0
 
 @export var mouse_sensitivity: float = 0.005
 @export var fall_multiplier: float = 2.0
+@export var max_hitpoints: float = 100
 
+var hitpoints: float = max_hitpoints:
+	set(value):
+		hitpoints = value
+		if hitpoints <= 0:
+			get_tree().reload_current_scene()
+		print('health: %s' % [hitpoints])
+		
 ## How much mouse has moved last frame, adjusted to how much camera should move
 var mouse_motion: Vector2 = Vector2.ZERO
 

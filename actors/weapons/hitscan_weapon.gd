@@ -6,6 +6,7 @@ extends Node3D
 @export var recoil: float = 0.05
 ## The mesh that will be animated during recoil
 @export var weapon_mesh: Node3D
+@export var weapon_damage: float = 15
 
 @onready var ray_cast: RayCast3D = $RayCast
 @onready var cooldown_timer: Timer = $CooldownTimer
@@ -23,3 +24,6 @@ func shoot() -> void:
 	cooldown_timer.start(1.0 / shoot_rate)
 	print('shootd at %s ' % [ray_cast.get_collider()])
 	weapon_mesh.position.z += recoil
+	var collider:  = ray_cast.get_collider()
+	if collider is Enemy:
+		collider.hitpoints -= weapon_damage
