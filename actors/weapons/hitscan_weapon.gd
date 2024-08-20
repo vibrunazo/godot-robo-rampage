@@ -4,8 +4,10 @@ extends Node3D
 @export var shoot_rate: float = 14.0
 ## How far to recoil in meters
 @export var recoil: float = 0.05
-## The mesh that will be animated during recoil
+## The mesh that will be animated during recoil. Override on children
 @export var weapon_mesh: Node3D
+## Override on children to add muzzle flash emited when firing
+@export var muzzle_flash: GPUParticles3D
 @export var weapon_damage: float = 15
 
 @onready var ray_cast: RayCast3D = $RayCast
@@ -21,6 +23,7 @@ func _process(delta: float) -> void:
 	weapon_mesh.position = weapon_mesh.position.lerp(weapon_position, delta * 10)
 
 func shoot() -> void:
+	if muzzle_flash: muzzle_flash.restart()
 	cooldown_timer.start(1.0 / shoot_rate)
 	print('shootd at %s ' % [ray_cast.get_collider()])
 	weapon_mesh.position.z += recoil
