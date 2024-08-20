@@ -7,3 +7,7 @@ script = ExtResource("1_xfckc")
 
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="RayCast" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -100)
+hit_back_faces = false
