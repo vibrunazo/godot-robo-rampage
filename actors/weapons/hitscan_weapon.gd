@@ -31,6 +31,7 @@ func shoot() -> void:
 	var collider:  = ray_cast.get_collider()
 	if collider is Enemy:
 		collider.hitpoints -= weapon_damage
-	var spark := sparks.instantiate() as GPUParticles3D
-	add_child(spark)
-	spark.global_position = ray_cast.get_collision_point()
+	if collider:
+		var spark := sparks.instantiate() as GPUParticles3D
+		add_child(spark)
+		spark.global_position = ray_cast.get_collision_point()
