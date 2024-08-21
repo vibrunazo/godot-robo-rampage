@@ -9,6 +9,7 @@ const JUMP_VELOCITY = 4.5
 @export var aggro_range: float = 12.0
 @export var attack_range: float = 1.5
 @export var weapon_damage: float = 20
+@export var turn_speed: float = 10
 
 var player: Player
 var provoked: bool = false
@@ -20,6 +21,8 @@ var hitpoints: float = max_hitpoints:
 		if hitpoints <= 0:
 			queue_free()
 		provoked = true
+## if true the nav agent reached a nav link and should stop updating path for a while
+var is_linking: bool = false
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -27,6 +30,7 @@ var hitpoints: float = max_hitpoints:
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	setup_nav()
+	animation_player.play("RESET") # was not resetting after level restart
 	
 
 #func _process(delta: float) -> void:
@@ -38,9 +42,10 @@ func setup_nav() -> void:
 	nav_timer.one_shot = false
 	nav_timer.timeout.connect(update_path)
 	add_child(nav_timer)
-	nav_timer.start(1)
+	nav_timer.start(0.25)
 
 func update_path() -> void:
+	if is_linking: return
 	if provoked:
 		navigation_agent.target_position = player.global_position
 	
@@ -72,7 +77,7 @@ func look_at_target(direction: Vector3) -> void :
 		look_target.y = global_position.y
 		if global_position.distance_squared_to(look_target) > 0.2:
 			var tr_target := transform.looking_at(look_target, Vector3.UP, true)
-			basis = basis.slerp(tr_target.basis, 3 * get_physics_process_delta_time())
+			basis = basis.slerp(tr_target.basis, turn_speed * get_physics_process_delta_time())
 			
 func try_attack() -> void:
 	if not provoked: return
@@ -87,4 +92,8 @@ func attack() -> void:
 	if not player: return
 	player.hitpoints -= weapon_damage
 	
-	
+
+func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:
+	is_linking = true
+	await get_tree().create_timer(2).timeout
+	is_linking = false

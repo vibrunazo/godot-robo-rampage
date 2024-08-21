@@ -11,6 +11,9 @@ const SPEED = 5.0
 
 var hitpoints: float = max_hitpoints:
 	set(value):
+		if value < hitpoints:
+			damage_anim.stop(false)
+			damage_anim.play("take_damage")
 		hitpoints = value
 		if hitpoints <= 0:
 			get_tree().reload_current_scene()
@@ -20,6 +23,7 @@ var hitpoints: float = max_hitpoints:
 var mouse_motion: Vector2 = Vector2.ZERO
 
 @onready var camera_pivot: Node3D = $CameraPivot
+@onready var damage_anim: AnimationPlayer = $DamageTexture/DamageAnim
 
 func _ready() -> void:
 	#camera.make_current()

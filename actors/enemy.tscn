@@ -130,6 +130,7 @@ shape = SubResource("CapsuleShape3D_oh5ux")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 debug_enabled = true
+debug_path_custom_point_size = 6.0
 
 [node name="Visor" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5)
@@ -140,3 +141,5 @@ mesh = SubResource("BoxMesh_1l1ra")
 libraries = {
 "": SubResource("AnimationLibrary_g6em1")
 }
+
+[connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]
