@@ -1,5 +1,6 @@
 extends Node3D
 
+@export var weapon_damage: float = 15
 ## How many times per second the weapon can shoot
 @export var shoot_rate: float = 14.0
 ## How far to recoil in meters
@@ -8,7 +9,7 @@ extends Node3D
 @export var weapon_mesh: Node3D
 ## Override on children to add muzzle flash emited when firing
 @export var muzzle_flash: GPUParticles3D
-@export var weapon_damage: float = 15
+@export var sparks: PackedScene
 
 @onready var ray_cast: RayCast3D = $RayCast
 @onready var cooldown_timer: Timer = $CooldownTimer
@@ -30,3 +31,6 @@ func shoot() -> void:
 	var collider:  = ray_cast.get_collider()
 	if collider is Enemy:
 		collider.hitpoints -= weapon_damage
+	var spark := sparks.instantiate() as GPUParticles3D
+	add_child(spark)
+	spark.global_position = ray_cast.get_collision_point()
