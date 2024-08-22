@@ -1,7 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://7tti8wjtaf1d"]
+[gd_scene load_steps=7 format=3 uid="uid://7tti8wjtaf1d"]
 
 [ext_resource type="Theme" uid="uid://dkacpq65gs2fi" path="res://ui/robot_theme.tres" id="1_uvs8n"]
 [ext_resource type="Script" path="res://ui/game_over_menu.gd" id="2_p30bn"]
+[ext_resource type="Shader" uid="uid://cr34ueeovnfwc" path="res://ui/game_over_menu.tres" id="3_atlka"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r1ux0"]
+shader = ExtResource("3_atlka")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fjnko"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3slay"]
 font_size = 96
@@ -17,6 +23,17 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_uvs8n")
 script = ExtResource("2_p30bn")
+
+[node name="BackgroundBlur" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_r1ux0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("PlaceholderTexture2D_fjnko")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
