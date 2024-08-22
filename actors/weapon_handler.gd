@@ -21,3 +21,23 @@ func _unhandled_input(event: InputEvent) -> void:
 		equip_weapon(weapon_1)
 	if event.is_action_pressed("weapon_2"):
 		equip_weapon(weapon_2)
+	if event.is_action_pressed("next_weapon"):
+		next_weapon()
+	if event.is_action_pressed("last_weapon"):
+		last_weapon()
+
+func get_current_index() -> int:
+	for index in get_child_count():
+		if get_child(index).visible:
+			return index
+	return -1
+
+func next_weapon() -> void:
+	var index := get_current_index()
+	index = wrapi(index + 1, 0, get_child_count())
+	equip_weapon(get_child(index))
+
+func last_weapon() -> void:
+	var index := get_current_index()
+	index = wrapi(index - 1, 0, get_child_count())
+	equip_weapon(get_child(index))
