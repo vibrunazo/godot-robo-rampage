@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
 [ext_resource type="Script" path="res://actors/crosshair.gd" id="3_d4bmt"]
-[ext_resource type="PackedScene" uid="uid://c7w8j7ys0etm5" path="res://actors/weapons/SMG.tscn" id="4_3lmw0"]
 [ext_resource type="Script" path="res://actors/hide_me.gd" id="4_63tsh"]
+[ext_resource type="PackedScene" uid="uid://ctkvoxmwv54lk" path="res://actors/weapons/Rifle.tscn" id="4_qpvxy"]
 [ext_resource type="Texture2D" uid="uid://e3stl4obj8kq" path="res://assets/tex/damage.png" id="6_kqx7v"]
 [ext_resource type="PackedScene" uid="uid://7tti8wjtaf1d" path="res://ui/game_over_menu.tscn" id="7_wgu72"]
 
@@ -101,11 +101,10 @@ cull_mask = 1048573
 current = true
 script = ExtResource("2_tf2t2")
 
-[node name="HitscanWeapon" parent="CameraPivot/SmoothCamera" instance=ExtResource("4_3lmw0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35)
-
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="CameraPivot/SmoothCamera"]
 remote_path = NodePath("../../../SubViewportContainer/SubViewport/WeaponCamera")
+
+[node name="Rifle" parent="CameraPivot/SmoothCamera" instance=ExtResource("4_qpvxy")]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)

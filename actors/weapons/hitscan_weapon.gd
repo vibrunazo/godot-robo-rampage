@@ -5,6 +5,9 @@ extends Node3D
 @export var shoot_rate: float = 14.0
 ## How far to recoil in meters
 @export var recoil: float = 0.05
+## If true automatically fires when mouse is held down, else requires reclick each time
+@export var automatic: bool = false
+
 ## The mesh that will be animated during recoil. Override on children
 @export var weapon_mesh: Node3D
 ## Override on children to add muzzle flash emited when firing
@@ -18,9 +21,14 @@ extends Node3D
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_pressed("fire"):
-		if cooldown_timer.is_stopped():
-			shoot()
+	if automatic:
+		if Input.is_action_pressed("fire"):
+			if cooldown_timer.is_stopped():
+				shoot()
+	else:
+		if Input.is_action_just_pressed("fire"):
+			if cooldown_timer.is_stopped():
+				shoot()
 	weapon_mesh.position = weapon_mesh.position.lerp(weapon_position, delta * 10)
 
 func shoot() -> void:
