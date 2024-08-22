@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ck0u5t08sjghc"]
+[gd_scene load_steps=18 format=3 uid="uid://ck0u5t08sjghc"]
 
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://e3stl4obj8kq" path="res://assets/tex/damage.png" id="6_kqx7v"]
 [ext_resource type="Script" path="res://actors/weapons/ammo_handler.gd" id="7_ufeaq"]
 [ext_resource type="PackedScene" uid="uid://7tti8wjtaf1d" path="res://ui/game_over_menu.tscn" id="7_wgu72"]
+[ext_resource type="Theme" uid="uid://dkacpq65gs2fi" path="res://ui/robot_theme.tres" id="11_nqufw"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
 
@@ -148,8 +149,9 @@ ammo_handler = NodePath("../../AmmoHandler")
 ammo_handler = NodePath("../../AmmoHandler")
 ammo_type = 1
 
-[node name="AmmoHandler" type="Node" parent="SubViewportContainer/SubViewport/WeaponCamera"]
+[node name="AmmoHandler" type="Node" parent="SubViewportContainer/SubViewport/WeaponCamera" node_paths=PackedStringArray("ammo_label")]
 script = ExtResource("7_ufeaq")
+ammo_label = NodePath("../../../../MarginContainer/AmmoLabel")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15
@@ -184,3 +186,22 @@ libraries = {
 
 [node name="GameOverMenu" parent="." instance=ExtResource("7_wgu72")]
 visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="AmmoLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = ExtResource("11_nqufw")
+text = "999	"

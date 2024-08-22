@@ -8,13 +8,15 @@ func _ready() -> void:
 
 func equip_weapon(active_weapon: HitscanWeapon) -> void:
 	for child in get_children():
-		if child is not HitscanWeapon: continue
-		if child == active_weapon:
-			child.show()
-			child.set_process(true)
-		else:
-			child.hide()
-			child.set_process(false)
+		if child is HitscanWeapon:
+			if child == active_weapon:
+				child.show()
+				child.set_process(true)
+				if child.ammo_handler:
+					child.ammo_handler.update_ammo_label(child.ammo_type)
+			else:
+				child.hide()
+				child.set_process(false)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("weapon_1"):
