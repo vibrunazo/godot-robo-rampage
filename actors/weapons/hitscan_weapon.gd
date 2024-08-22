@@ -1,3 +1,4 @@
+class_name HitscanWeapon
 extends Node3D
 
 @export var weapon_damage: float = 15
