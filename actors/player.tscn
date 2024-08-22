@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ck0u5t08sjghc"]
+[gd_scene load_steps=14 format=3 uid="uid://ck0u5t08sjghc"]
 
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c7w8j7ys0etm5" path="res://actors/weapons/SMG.tscn" id="4_3lmw0"]
 [ext_resource type="Script" path="res://actors/hide_me.gd" id="4_63tsh"]
 [ext_resource type="Texture2D" uid="uid://e3stl4obj8kq" path="res://assets/tex/damage.png" id="6_kqx7v"]
+[ext_resource type="PackedScene" uid="uid://7tti8wjtaf1d" path="res://ui/game_over_menu.tscn" id="7_wgu72"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
 
@@ -162,3 +163,6 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8wsn8")
 }
+
+[node name="GameOverMenu" parent="." instance=ExtResource("7_wgu72")]
+visible = false

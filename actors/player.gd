@@ -15,8 +15,8 @@ var hitpoints: float = max_hitpoints:
 			damage_anim.stop(false)
 			damage_anim.play("take_damage")
 		hitpoints = value
-		if hitpoints <= 0:
-			get_tree().reload_current_scene()
+		if hitpoints <= 0 and game_over_menu:
+			game_over_menu.game_over()
 		print('health: %s' % [hitpoints])
 		
 ## How much mouse has moved last frame, adjusted to how much camera should move
@@ -24,6 +24,7 @@ var mouse_motion: Vector2 = Vector2.ZERO
 
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var damage_anim: AnimationPlayer = $DamageTexture/DamageAnim
+@onready var game_over_menu: GameOverMenu = $GameOverMenu
 
 func _ready() -> void:
 	#camera.make_current()
