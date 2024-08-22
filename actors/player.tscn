@@ -1,13 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://ck0u5t08sjghc"]
+[gd_scene load_steps=17 format=3 uid="uid://ck0u5t08sjghc"]
 
 [ext_resource type="Script" path="res://actors/player.gd" id="1_gevwp"]
 [ext_resource type="Script" path="res://actors/smooth_camera.gd" id="2_tf2t2"]
 [ext_resource type="Script" path="res://actors/crosshair.gd" id="3_d4bmt"]
-[ext_resource type="Script" path="res://actors/weapon_handler.gd" id="4_2xyf3"]
+[ext_resource type="Script" path="res://actors/weapons/weapon_handler.gd" id="4_2xyf3"]
 [ext_resource type="PackedScene" uid="uid://c7w8j7ys0etm5" path="res://actors/weapons/SMG.tscn" id="4_3lmw0"]
 [ext_resource type="Script" path="res://actors/hide_me.gd" id="4_63tsh"]
 [ext_resource type="PackedScene" uid="uid://ctkvoxmwv54lk" path="res://actors/weapons/Rifle.tscn" id="4_qpvxy"]
 [ext_resource type="Texture2D" uid="uid://e3stl4obj8kq" path="res://assets/tex/damage.png" id="6_kqx7v"]
+[ext_resource type="Script" path="res://actors/weapons/ammo_handler.gd" id="7_ufeaq"]
 [ext_resource type="PackedScene" uid="uid://7tti8wjtaf1d" path="res://ui/game_over_menu.tscn" id="7_wgu72"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
@@ -140,9 +141,15 @@ script = ExtResource("4_2xyf3")
 weapon_1 = NodePath("Rifle")
 weapon_2 = NodePath("SMG")
 
-[node name="Rifle" parent="SubViewportContainer/SubViewport/WeaponCamera/WeaponHandler" instance=ExtResource("4_qpvxy")]
+[node name="Rifle" parent="SubViewportContainer/SubViewport/WeaponCamera/WeaponHandler" node_paths=PackedStringArray("ammo_handler") instance=ExtResource("4_qpvxy")]
+ammo_handler = NodePath("../../AmmoHandler")
 
-[node name="SMG" parent="SubViewportContainer/SubViewport/WeaponCamera/WeaponHandler" instance=ExtResource("4_3lmw0")]
+[node name="SMG" parent="SubViewportContainer/SubViewport/WeaponCamera/WeaponHandler" node_paths=PackedStringArray("ammo_handler") instance=ExtResource("4_3lmw0")]
+ammo_handler = NodePath("../../AmmoHandler")
+ammo_type = 1
+
+[node name="AmmoHandler" type="Node" parent="SubViewportContainer/SubViewport/WeaponCamera"]
+script = ExtResource("7_ufeaq")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15

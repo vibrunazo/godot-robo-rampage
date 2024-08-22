@@ -14,6 +14,8 @@ extends Node3D
 ## Override on children to add muzzle flash emited when firing
 @export var muzzle_flash: GPUParticles3D
 @export var sparks: PackedScene
+@export var ammo_handler: AmmoHandler
+@export var ammo_type: AmmoHandler.ammo_type
 
 @onready var ray_cast: RayCast3D = $RayCast
 @onready var cooldown_timer: Timer = $CooldownTimer
@@ -33,6 +35,8 @@ func _process(delta: float) -> void:
 	weapon_mesh.position = weapon_mesh.position.lerp(weapon_position, delta * 10)
 
 func shoot() -> void:
+	if not ammo_handler.has_ammo(ammo_type): return
+	ammo_handler.use_ammo(ammo_type)
 	if muzzle_flash: muzzle_flash.restart()
 	cooldown_timer.start(1.0 / shoot_rate)
 	print('shootd at %s ' % [ray_cast.get_collider()])
