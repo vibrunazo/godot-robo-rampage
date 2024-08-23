@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=21 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="2_2hdwh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://j7mxram1v3pk" path="res://levels/materials/noisydark.tres" id="5_wqco1"]
 [ext_resource type="PackedScene" uid="uid://bpxywbbmowltj" path="res://actors/moving_platform.tscn" id="7_hdubb"]
 [ext_resource type="PackedScene" uid="uid://c5hexswfovqw6" path="res://actors/enemy.tscn" id="7_siv06"]
+[ext_resource type="PackedScene" uid="uid://2yjewlruwtnt" path="res://actors/pickups/pickup.tscn" id="9_mqe8w"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_53tha"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -311,3 +312,6 @@ end_position = Vector3(0.0999999, -5, -1)
 
 [node name="Enemy" parent="." instance=ExtResource("7_siv06")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, -20)
+
+[node name="Pickup" parent="." instance=ExtResource("9_mqe8w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -8)

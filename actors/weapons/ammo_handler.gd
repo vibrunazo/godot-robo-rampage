@@ -21,6 +21,11 @@ func use_ammo(type: ammo_type) -> void:
 	if not has_ammo(type): return
 	ammo_storage[type] -= 1
 	update_ammo_label(type)
+
+func add_ammo(type: ammo_type, amount: int) -> void:
+	if not ammo_storage.has(type): return
+	ammo_storage[type] = maxi(ammo_storage[type] + amount, 0)
+	update_ammo_label(type)
 	
 func update_ammo_label(type: ammo_type) -> void:
 	if not ammo_label: return

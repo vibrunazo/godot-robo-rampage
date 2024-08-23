@@ -25,6 +25,7 @@ var mouse_motion: Vector2 = Vector2.ZERO
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var damage_anim: AnimationPlayer = $DamageTexture/DamageAnim
 @onready var game_over_menu: GameOverMenu = $GameOverMenu
+@onready var ammo_handler: AmmoHandler = %AmmoHandler
 
 func _ready() -> void:
 	#camera.make_current()
@@ -78,3 +79,7 @@ func handle_camera_rotation() -> void:
 	# needs to be reset because _input is never called when mouse doesn't move, 
 	# so it's never set to zero when mouse is not moving
 	mouse_motion = Vector2.ZERO
+
+func pickup_ammo(type: AmmoHandler.ammo_type, amount: int) -> void:
+	if ammo_handler:
+		ammo_handler.add_ammo(type, amount)
