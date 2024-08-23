@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr6w1us6dxk6s"]
+[gd_scene load_steps=20 format=3 uid="uid://dr6w1us6dxk6s"]
 
 [ext_resource type="PackedScene" uid="uid://ck0u5t08sjghc" path="res://actors/player.tscn" id="1_r6gyw"]
 [ext_resource type="Script" path="res://ui/fps_counter.gd" id="2_2hdwh"]
-[ext_resource type="Material" uid="uid://dpuwbvneg7k23" path="res://levels/materials/noisygreen1.tres" id="2_ddx3l"]
 [ext_resource type="Material" uid="uid://bv625k3vb3dv6" path="res://levels/materials/noisyorange.tres" id="3_3lnbn"]
+[ext_resource type="Material" uid="uid://tpkrpqwyt1gc" path="res://levels/materials/grass_mat.tres" id="3_vxwe4"]
+[ext_resource type="Shader" uid="uid://dw68wuawvb62r" path="res://levels/materials/grass_shader.tres" id="3_xtw4l"]
 [ext_resource type="Material" uid="uid://j7mxram1v3pk" path="res://levels/materials/noisydark.tres" id="5_wqco1"]
 [ext_resource type="PackedScene" uid="uid://bpxywbbmowltj" path="res://actors/moving_platform.tscn" id="7_hdubb"]
 [ext_resource type="PackedScene" uid="uid://c5hexswfovqw6" path="res://actors/enemy.tscn" id="7_siv06"]
@@ -61,6 +62,10 @@ cell_size = 0.1
 cell_height = 0.1
 agent_radius = 0.8
 agent_max_climb = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_awgok"]
+render_priority = 0
+shader = ExtResource("3_xtw4l")
 
 [sub_resource type="Curve" id="Curve_wnwe8"]
 _data = [Vector2(0, 0.428571), 0.0, 0.0, 0, 0, Vector2(0.994506, 0.89011), 0.0, 0.0, 0, 0]
@@ -128,7 +133,7 @@ navigation_mesh = SubResource("NavigationMesh_xa1lr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 use_collision = true
 size = Vector3(64, 1, 64)
-material = ExtResource("2_ddx3l")
+material = SubResource("ShaderMaterial_awgok")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.5, -8.5)
@@ -141,7 +146,7 @@ transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -4, 0, 0
 operation = 2
 polygon = PackedVector2Array(-2, -0.5, -3, 2, 2.5, 0.7, -0.1, -0.6)
 depth = 4.0
-material = ExtResource("2_ddx3l")
+material = ExtResource("3_vxwe4")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.75, 2.5)
