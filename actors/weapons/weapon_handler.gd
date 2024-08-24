@@ -13,7 +13,7 @@ func equip_weapon(active_weapon: HitscanWeapon) -> void:
 				child.show()
 				child.set_process(true)
 				if child.ammo_handler:
-					child.ammo_handler.update_ammo_label(child.ammo_type)
+					child.ammo_handler.equipped(child.ammo_type)
 			else:
 				child.hide()
 				child.set_process(false)
