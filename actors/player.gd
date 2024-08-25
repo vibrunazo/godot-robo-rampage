@@ -77,7 +77,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		if Input.is_action_pressed("aim"):
-			velocity *= aim_multiplier
+			velocity.x *= aim_multiplier
+			velocity.z *= aim_multiplier
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)

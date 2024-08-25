@@ -13,11 +13,13 @@
 [ext_resource type="Theme" uid="uid://dkacpq65gs2fi" path="res://ui/robot_theme.tres" id="11_nqufw"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gbndv"]
+height = 1.8
 
 [sub_resource type="PrismMesh" id="PrismMesh_pih1j"]
 size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ubg2j"]
+height = 1.8
 
 [sub_resource type="Animation" id="Animation_02lsd"]
 length = 0.001

@@ -5,7 +5,7 @@
 [ext_resource type="Material" uid="uid://bv625k3vb3dv6" path="res://levels/materials/noisyorange.tres" id="3_3lnbn"]
 [ext_resource type="Material" uid="uid://tpkrpqwyt1gc" path="res://levels/materials/grass_mat.tres" id="3_vxwe4"]
 [ext_resource type="Shader" uid="uid://dw68wuawvb62r" path="res://levels/materials/grass_shader.tres" id="3_xtw4l"]
-[ext_resource type="Material" uid="uid://j7mxram1v3pk" path="res://levels/materials/noisydark.tres" id="5_wqco1"]
+[ext_resource type="Material" uid="uid://cgctmg61mrjeu" path="res://levels/materials/gray_proto_noisy_mat.tres" id="4_erod1"]
 [ext_resource type="PackedScene" uid="uid://bpxywbbmowltj" path="res://actors/moving_platform.tscn" id="7_hdubb"]
 [ext_resource type="PackedScene" uid="uid://c5hexswfovqw6" path="res://actors/enemy.tscn" id="7_siv06"]
 [ext_resource type="PackedScene" uid="uid://05dlrudtkixq" path="res://actors/pickups/bullet_pickup.tscn" id="9_s3ksc"]
@@ -128,6 +128,7 @@ script = ExtResource("2_2hdwh")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_xa1lr")
+metadata/_edit_lock_ = true
 
 [node name="LevelObjects" type="Node3D" parent="NavigationRegion3D"]
 
@@ -137,24 +138,24 @@ use_collision = true
 size = Vector3(64, 1, 64)
 material = SubResource("ShaderMaterial_awgok")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0.5, -8.5)
 use_collision = true
 size = Vector3(12, 1, 12)
-material = ExtResource("3_3lnbn")
+material = ExtResource("4_erod1")
 
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="NavigationRegion3D/LevelObjects/CSGBox3D"]
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="NavigationRegion3D/LevelObjects/Wall"]
 transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -4, 0, 0)
 operation = 2
 polygon = PackedVector2Array(-2, -0.5, -3, 2, 2.5, 0.7, -0.1, -0.6)
 depth = 4.0
 material = ExtResource("3_vxwe4")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall3" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.75, 2.5)
 use_collision = true
 size = Vector3(7, 1.5, 4)
-material = ExtResource("3_3lnbn")
+material = ExtResource("4_erod1")
 
 [node name="MovingPlatform" parent="NavigationRegion3D/LevelObjects" node_paths=PackedStringArray("end_pos_node") instance=ExtResource("7_hdubb")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23, 4.5, -7.5)
@@ -184,11 +185,11 @@ end_pos_node = NodePath("EndPoint")
 [node name="EndPoint" type="Node3D" parent="NavigationRegion3D/LevelObjects/MovingPlatform4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, 0)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall6" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, 20.5)
 use_collision = true
 size = Vector3(10, 5, 15)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
 [node name="CSGBox3D9" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 25)
@@ -203,17 +204,17 @@ use_collision = true
 size = Vector3(20, 5, 4)
 material = ExtResource("3_3lnbn")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall4" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, 1)
 use_collision = true
 size = Vector3(10, 5, 16)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 2.5, 1.5)
 use_collision = true
 size = Vector3(10, 5, 15)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
 [node name="CSGBox3D11" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects/CSGBox3D7"]
 transform = Transform3D(-3.78552e-08, 2.18557e-08, -1, 0.5, 0.866025, 0, 0.866025, -0.5, -4.37114e-08, 3, 3.29904, -4.25)
@@ -226,7 +227,7 @@ material = ExtResource("3_3lnbn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 2.5, 20.5)
 use_collision = true
 size = Vector3(10, 5, 15)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
 [node name="CSGBox3D8" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 11)
@@ -246,43 +247,43 @@ use_collision = true
 size = Vector3(28, 1, 5)
 material = ExtResource("3_3lnbn")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall5" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 2.5, -19.5)
 use_collision = true
 size = Vector3(10, 5, 15)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
 [node name="CSGBox3D11" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -19, 2.5, -22.5)
 use_collision = true
 size = Vector3(10, 5, 14)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
-[node name="CSGBox3D14" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall7" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 5, 11)
 use_collision = true
 size = Vector3(10, 10, 8)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
-[node name="CSGBox3D15" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects/CSGBox3D14"]
+[node name="CSGBox3D15" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects/Wall7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 operation = 2
 use_collision = true
 size = Vector3(4, 9, 8)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
-[node name="CSGBox3D16" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects/CSGBox3D14"]
+[node name="CSGBox3D16" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects/Wall7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.74846e-07)
 operation = 2
 use_collision = true
 size = Vector3(4, 10, 4)
-material = ExtResource("5_wqco1")
+material = ExtResource("4_erod1")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
+[node name="Wall2" type="CSGBox3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 1.5, -8.5)
 use_collision = true
 size = Vector3(6, 1, 12)
-material = ExtResource("3_3lnbn")
+material = ExtResource("4_erod1")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="NavigationRegion3D/LevelObjects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 6)
