@@ -99,6 +99,7 @@ shape = SubResource("CapsuleShape3D_ubg2j")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
 [node name="SmoothCamera" type="Camera3D" parent="CameraPivot"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 top_level = true
 cull_mask = 1048573
@@ -108,7 +109,7 @@ script = ExtResource("2_tf2t2")
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="CameraPivot/SmoothCamera"]
 remote_path = NodePath("../../../SubViewportContainer/SubViewport/WeaponCamera")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot"]
+[node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot/SmoothCamera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 light_color = Color(0.88466, 0.89, 0.8099, 1)
 light_energy = 6.0
@@ -132,6 +133,7 @@ size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
 [node name="WeaponCamera" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 cull_mask = 2
 fov = 40.0

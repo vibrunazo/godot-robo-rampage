@@ -6,8 +6,16 @@ const SPEED = 5.0
 @export var jump_height: float = 1
 
 @export var mouse_sensitivity: float = 0.005
+## How much to multiply gravity when falling
 @export var fall_multiplier: float = 2.0
 @export var max_hitpoints: float = 100
+## How much to multiply camera FOV, mouse sensitivity and move speed when aiming down sights
+@export var aim_multiplier: float = 0.6
+## How fast to lerp from regular fov in to aim_multiplier
+@export var aim_in_speed: float = 20.0
+## How fast to lerp from aim_multiplier fov back out to regular fov
+@export var aim_out_speed: float = 30.0
+
 
 var hitpoints: float = max_hitpoints:
 	set(value):
@@ -26,12 +34,27 @@ var mouse_motion: Vector2 = Vector2.ZERO
 @onready var damage_anim: AnimationPlayer = $DamageTexture/DamageAnim
 @onready var game_over_menu: GameOverMenu = $GameOverMenu
 @onready var ammo_handler: AmmoHandler = %AmmoHandler
+@onready var smooth_camera: Camera3D = %SmoothCamera
+@onready var weapon_camera: Camera3D = %WeaponCamera
+
+## the starting Field of View of the smooth_camera
+var ini_fov_smooth_cam: float
+## the starting Field of View of the weapon_camera
+var ini_fov_weapon_cam: float
 
 func _ready() -> void:
-	#camera.make_current()
+	if smooth_camera: ini_fov_smooth_cam = smooth_camera.fov
+	if weapon_camera: ini_fov_weapon_cam = weapon_camera.fov
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("aim"):
+		smooth_camera.fov = lerp(smooth_camera.fov, ini_fov_smooth_cam * aim_multiplier, delta * aim_in_speed)
+		weapon_camera.fov = lerp(weapon_camera.fov, ini_fov_weapon_cam * aim_multiplier, delta * aim_in_speed)
+	else:
+		smooth_camera.fov = lerp(smooth_camera.fov, ini_fov_smooth_cam, delta * aim_out_speed)
+		weapon_camera.fov = lerp(weapon_camera.fov, ini_fov_weapon_cam, delta * aim_out_speed)
+	
 func _physics_process(delta: float) -> void:
 	handle_camera_rotation()
 	# Add the gravity.
@@ -53,6 +76,8 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		if Input.is_action_pressed("aim"):
+			velocity *= aim_multiplier
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -62,6 +87,8 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		mouse_motion = -event.relative * mouse_sensitivity
+		if Input.is_action_pressed("aim"):
+			mouse_motion *= aim_multiplier 
 	if event.is_action_pressed("ui_cancel"):
 		toggle_mouse_capture()
 
