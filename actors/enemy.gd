@@ -2,8 +2,6 @@ class_name Enemy
 extends CharacterBody3D
 
 
-const JUMP_VELOCITY = 4.5
-
 @export var speed := 8.0
 @export var max_hitpoints: float = 100
 @export var aggro_range: float = 12.0
