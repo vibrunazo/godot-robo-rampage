@@ -23,18 +23,12 @@ var hitpoints: float = max_hitpoints:
 var is_linking: bool = false
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	setup_nav()
-	animation_player.play("idle") # was not resetting after level restart
-	
-
-#func _process(delta: float) -> void:
-	#print(animation_player.current_animation)
-	#if provoked:
-	#navigation_agent.target_position = player.global_position
 
 func setup_nav() -> void:
 	var nav_timer: Timer = Timer.new()
@@ -54,6 +48,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
+	if playback.get_current_node() == "attack": return
 	var direction: = global_position.direction_to(next_position)
 	distance = global_position.distance_to(player.global_position)
 	provoked = distance <= aggro_range or provoked
@@ -83,7 +78,8 @@ func try_attack() -> void:
 	play_attack()
 
 func play_attack() -> void:
-	animation_player.play("attack")
+	#animation_player.play("attack")
+	playback.travel("attack")
 	
 func attack() -> void:
 	print('ATTAAAAACK')
@@ -95,6 +91,3 @@ func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:
 	is_linking = true
 	await get_tree().create_timer(2).timeout
 	is_linking = false
-
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	animation_player.play("idle")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5hexswfovqw6"]
+[gd_scene load_steps=14 format=3 uid="uid://c5hexswfovqw6"]
 
 [ext_resource type="Script" path="res://actors/enemy.gd" id="1_q6y2v"]
 [ext_resource type="PackedScene" uid="uid://ceb3bjcavr033" path="res://assets/mesh/Drone.glb" id="2_levim"]
@@ -90,7 +90,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 1),
 "transitions": PackedFloat32Array(-2, -2, -2),
 "update": 0,
-"values": [Vector3(0, 0.2, 0), Vector3(0, 0.3, 0), Vector3(0, 0.2, 0)]
+"values": [Vector3(0, 0.2, 0), Vector3(0, 0.4, 0), Vector3(0, 0.2, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g6em1"]
@@ -99,6 +99,29 @@ _data = {
 "attack": SubResource("Animation_7be7m"),
 "idle": SubResource("Animation_kfk0m")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aesj8"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x2hly"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cljs1"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gnc4j"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_of2i0"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_eg3wj"]
+states/Start/position = Vector2(189, 100)
+states/attack/node = SubResource("AnimationNodeAnimation_aesj8")
+states/attack/position = Vector2(477, 81)
+states/idle/node = SubResource("AnimationNodeAnimation_x2hly")
+states/idle/position = Vector2(330, 81)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_cljs1"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_gnc4j"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_of2i0")]
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_q6y2v")
@@ -118,5 +141,8 @@ libraries = {
 }
 autoplay = "idle"
 
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_eg3wj")
+anim_player = NodePath("../AnimationPlayer")
+
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
