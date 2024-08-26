@@ -10,7 +10,12 @@ extends CharacterBody3D
 @export var turn_speed: float = 10
 
 var player: Player
-var provoked: bool = false
+var provoked: bool = false:
+	set(value):
+		provoked = value
+		if provoked:
+			call_for_help()
+		
 var next_position: Vector3
 var distance: float
 var hitpoints: float = max_hitpoints:
@@ -25,6 +30,8 @@ var is_linking: bool = false
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
+@onready var help_range: Area3D = $HelpRange
+@onready var ray_cast: RayCast3D = $RayCast
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
@@ -51,7 +58,8 @@ func _physics_process(delta: float) -> void:
 	if playback.get_current_node() == "attack": return
 	var direction: = global_position.direction_to(next_position)
 	distance = global_position.distance_to(player.global_position)
-	provoked = distance <= aggro_range or provoked
+	if distance <= aggro_range and not provoked:
+		provoked = should_I_aggro_player()
 	
 	if direction:
 		look_at_target(direction)
@@ -63,6 +71,18 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	try_attack()
+
+func should_I_aggro_player() -> bool:
+	return test_los_with(player)
+
+func test_los_with(body: CharacterBody3D) -> bool:
+	ray_cast.target_position = to_local(body.global_position)
+	ray_cast.force_raycast_update()
+	if ray_cast.get_collider() == body:
+		print('%s testing collision with %s == true' % [name, body.name])
+		return true
+	print('%s testing collision with %s == false, collider: %s' % [name, body.name, ray_cast.get_collider()])
+	return false
 
 func look_at_target(direction: Vector3) -> void :
 	if global_position != next_position:
@@ -85,6 +105,18 @@ func attack() -> void:
 	print('ATTAAAAACK')
 	if not player: return
 	player.hitpoints -= weapon_damage
+	
+	
+func call_for_help() -> void:
+	print('HHHALP')
+	for body in help_range.get_overlapping_bodies():
+		if body is Enemy:
+			if test_los_with(body):
+				body.receive_call_for_help()
+
+func receive_call_for_help() -> void:
+	if !provoked: 
+		provoked = true
 	
 
 func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:

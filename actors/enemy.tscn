@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://c5hexswfovqw6"]
+[gd_scene load_steps=15 format=3 uid="uid://c5hexswfovqw6"]
 
 [ext_resource type="Script" path="res://actors/enemy.gd" id="1_q6y2v"]
 [ext_resource type="PackedScene" uid="uid://ceb3bjcavr033" path="res://assets/mesh/Drone.glb" id="2_levim"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oh5ux"]
+radius = 0.4
 height = 1.8
 
 [sub_resource type="Animation" id="Animation_lhat8"]
@@ -35,7 +36,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_7be7m"]
 resource_name = "attack"
-length = 0.5
+length = 1.2
 step = 0.1
 tracks/0/type = "method"
 tracks/0/imported = false
@@ -58,10 +59,10 @@ tracks/1/path = NodePath("Drone:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.5),
-"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.6, 1.2),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5, 0.5),
 "update": 0,
-"values": [Vector3(0, 0.2, 0), Vector3(0, 0.2, -0.1), Vector3(0, 0.2, 0.5), Vector3(0, 0.2, 0)]
+"values": [Vector3(0, 0.2, 0), Vector3(0, 0.2, -0.1), Vector3(0, 0.2, 0.5), Vector3(0, 0.2, -0.1), Vector3(0, 0.2, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -70,10 +71,10 @@ tracks/2/path = NodePath("Drone:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.5),
-"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.6, 1.2),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5, 0.5, 0.5),
 "update": 0,
-"values": [Vector3(1, 1, 1), Vector3(0.98, 0.98, 0.98), Vector3(1.2, 1.2, 1.2), Vector3(1, 1, 1)]
+"values": [Vector3(1, 1, 1), Vector3(0.98, 0.98, 0.98), Vector3(1.2, 1.2, 1.2), Vector3(0.95, 0.95, 0.95), Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_kfk0m"]
@@ -123,6 +124,10 @@ states/idle/node = SubResource("AnimationNodeAnimation_x2hly")
 states/idle/position = Vector2(330, 81)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_cljs1"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_gnc4j"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_of2i0")]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_6tjef"]
+resource_local_to_scene = true
+radius = 8.0
+
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_q6y2v")
 
@@ -144,5 +149,15 @@ autoplay = "idle"
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_eg3wj")
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="HelpRange" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HelpRange"]
+shape = SubResource("SphereShape3D_6tjef")
+
+[node name="RayCast" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 4)
+debug_shape_custom_color = Color(0.39432, 0.72, 0.2952, 1)
+debug_shape_thickness = 4
 
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]
