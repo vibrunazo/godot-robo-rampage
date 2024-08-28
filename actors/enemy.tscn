@@ -1,7 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://c5hexswfovqw6"]
+[gd_scene load_steps=16 format=3 uid="uid://c5hexswfovqw6"]
 
 [ext_resource type="Script" path="res://actors/enemy.gd" id="1_q6y2v"]
 [ext_resource type="PackedScene" uid="uid://ceb3bjcavr033" path="res://assets/mesh/Drone.glb" id="2_levim"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_08k28"]
+points = PackedVector3Array(-0.366391, -0.468084, -0.653575, -0.446051, -0.452981, -0.531171, -1.05142, -0.0557585, -0.218768, -0.366391, -0.239115, -0.653575, 0.366186, -0.468084, -0.653575, -0.0784242, -0.482274, -0.482254, -0.0784242, -0.5141, 0.482081, -1.05142, -0.203944, 0.18302, -1.05142, -0.0500824, 0.238385, -1.05121, 0.0981033, -0.163514, -0.470751, 0.359101, -0.550738, -0.347866, 0.399441, -0.629672, 0.366186, -0.239115, -0.653575, 1.05142, -0.0557585, -0.218768, 0.445845, -0.452981, -0.531171, 0.0782183, -0.5141, 0.482081, 0.0782183, -0.482274, -0.482254, -0.0784242, 0.521274, 0.482081, -0.760777, -0.102079, 0.313873, -0.198016, 0.495123, 0.220819, -0.198016, 0.495123, -0.149951, -0.0784242, 0.48215, -0.482254, 0.34766, 0.399441, -0.629672, 1.05101, 0.0981033, -0.163514, 1.05121, -0.0500824, 0.238385, 1.05121, -0.203944, 0.18302, 0.470545, 0.359101, -0.550738, 0.760571, -0.102079, 0.313873, 0.0782183, 0.521274, 0.482081, 0.0782183, 0.48215, -0.482254, 0.19781, 0.495123, -0.149951, 0.19781, 0.495123, 0.220819)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oh5ux"]
 radius = 0.4
@@ -134,10 +137,18 @@ script = ExtResource("1_q6y2v")
 [node name="Drone" parent="." instance=ExtResource("2_levim")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 
+[node name="HurtArea" type="Area3D" parent="Drone"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Drone/HurtArea"]
+shape = SubResource("ConvexPolygonShape3D_08k28")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_oh5ux")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
 debug_path_custom_point_size = 6.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -160,4 +171,5 @@ target_position = Vector3(0, 0, 4)
 debug_shape_custom_color = Color(0.39432, 0.72, 0.2952, 1)
 debug_shape_thickness = 4
 
+[connection signal="body_entered" from="Drone/HurtArea" to="." method="_on_hurt_area_body_entered"]
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]

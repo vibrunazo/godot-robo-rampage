@@ -2,7 +2,8 @@ class_name Enemy
 extends CharacterBody3D
 
 
-@export var speed := 8.0
+@export var speed := 6.0
+@export var speed_max := 9.0
 @export var max_hitpoints: float = 100
 @export var aggro_range: float = 12.0
 @export var attack_range: float = 1.5
@@ -12,9 +13,11 @@ extends CharacterBody3D
 var player: Player
 var provoked: bool = false:
 	set(value):
-		provoked = value
-		if provoked:
+		if not provoked and value:
+			provoked = value
 			call_for_help()
+		else:
+			provoked = value
 		
 var next_position: Vector3
 var distance: float
@@ -26,6 +29,10 @@ var hitpoints: float = max_hitpoints:
 		provoked = true
 ## if true the nav agent reached a nav link and should stop updating path for a while
 var is_linking: bool = false
+## number that is random per enemy instance used to make each enemy a little different
+var rand_seed: float = randf()
+## Knockback vector used to push the enemy back when shot
+var knockback: Vector3
 
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var animation_tree: AnimationTree = $AnimationTree
@@ -36,6 +43,8 @@ var is_linking: bool = false
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	setup_nav()
+	speed = rand_rsf(speed, speed_max)
+	#print('enemy %s from 10 to 15: %s, from 20 to 50: %s' % [name, rand_rsf(10, 15), rand_rsf(20, 50)])
 
 func setup_nav() -> void:
 	var nav_timer: Timer = Timer.new()
@@ -49,6 +58,17 @@ func update_path() -> void:
 	if provoked:
 		navigation_agent.target_position = player.global_position
 
+## random range from seed, returns a number from and to given parameters
+## that is always the same for each enemy but different between enemies.
+## Inclusive.
+func rand_rs(from: int, to: int) -> int:
+	return roundi(rand_seed * 666) % (to - from + 1) + from
+	
+func rand_rsf(from: float, to: float) -> float:
+	var i: float = float(roundi(rand_seed * 888 * (from + 7) * (to + 13)) % (123)) / 123.0
+	#print('x: %s, y: %s' % [rand_seed, i])
+	return lerpf(from, to, i)
+
 func _physics_process(delta: float) -> void:
 	next_position = navigation_agent.get_next_path_position()
 	# Add the gravity.
@@ -57,9 +77,15 @@ func _physics_process(delta: float) -> void:
 
 	if playback.get_current_node() == "attack": return
 	var direction: = global_position.direction_to(next_position)
+	var t := Engine.get_physics_frames()
+	var s: float = sin(float(t) / rand_rsf(10, 30) + rand_rsf(0, 50))
+	direction = direction.rotated(Vector3.UP, s*PI/rand_rsf(8, 20))
 	distance = global_position.distance_to(player.global_position)
 	if distance <= aggro_range and not provoked:
 		provoked = should_I_aggro_player()
+	#if provoked and Engine.get_physics_frames() % 30:
+		#call_for_help()
+		
 	
 	if direction:
 		look_at_target(direction)
@@ -69,6 +95,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 
+	velocity += knockback
+	knockback = lerp(knockback, Vector3.ZERO, delta * 5)
 	move_and_slide()
 	try_attack()
 
@@ -79,9 +107,7 @@ func test_los_with(body: CharacterBody3D) -> bool:
 	ray_cast.target_position = to_local(body.global_position)
 	ray_cast.force_raycast_update()
 	if ray_cast.get_collider() == body:
-		print('%s testing collision with %s == true' % [name, body.name])
 		return true
-	print('%s testing collision with %s == false, collider: %s' % [name, body.name, ray_cast.get_collider()])
 	return false
 
 func look_at_target(direction: Vector3) -> void :
@@ -118,8 +144,15 @@ func receive_call_for_help() -> void:
 	if !provoked: 
 		provoked = true
 	
+func push(push_vector: Vector3) -> void:
+	knockback += push_vector
 
 func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:
 	is_linking = true
 	await get_tree().create_timer(2).timeout
 	is_linking = false
+
+
+func _on_hurt_area_body_entered(body: Node3D) -> void:
+	print('%s collided with %s' % [name, body.name])
+	pass # Replace with function body.

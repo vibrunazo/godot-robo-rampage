@@ -42,8 +42,11 @@ func shoot() -> void:
 	print('shootd at %s ' % [ray_cast.get_collider()])
 	weapon_mesh.position.z += recoil
 	var collider:  = ray_cast.get_collider()
+	if not collider: return
+	collider = collider.owner
 	if collider is Enemy:
 		collider.hitpoints -= weapon_damage
+		collider.push((collider.global_position - global_position).normalized() * 200 * recoil)
 	if collider:
 		var spark := sparks.instantiate() as GPUParticles3D
 		add_child(spark)
