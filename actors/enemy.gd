@@ -96,7 +96,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, speed)
 
 	velocity += knockback
-	knockback = lerp(knockback, Vector3.ZERO, delta * 5)
+	knockback = lerp(knockback, Vector3.ZERO, delta * 20)
 	move_and_slide()
 	try_attack()
 
@@ -145,6 +145,7 @@ func receive_call_for_help() -> void:
 		provoked = true
 	
 func push(push_vector: Vector3) -> void:
+	push_vector.y *= 0.3
 	knockback += push_vector
 
 func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:

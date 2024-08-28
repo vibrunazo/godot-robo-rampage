@@ -24,7 +24,7 @@ operator = 2
 [sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_e1ygm"]
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_a0lxy"]
-default_input_values = [0, 0.0, 1, 5.0]
+default_input_values = [0, 0.0, 1, 2.0]
 operator = 2
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_05wg6"]
@@ -117,7 +117,7 @@ void fragment() {
 
 
 // FloatOp:16
-	float n_in16p1 = 5.00000;
+	float n_in16p1 = 2.00000;
 	float n_out16p0 = n_out15p1 * n_in16p1;
 
 
@@ -132,6 +132,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(523.43, 683.18)
 nodes/fragment/0/position = Vector2(1060, 140)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_t2dyf")
 nodes/fragment/2/position = Vector2(-200, 200)
