@@ -144,6 +144,14 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Drone/HurtArea"]
 shape = SubResource("ConvexPolygonShape3D_08k28")
 
+[node name="Headlight" type="OmniLight3D" parent="Drone"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0338842, 0.294257)
+light_color = Color(0.3415, 0.75, 0.18, 1)
+light_energy = 10.0
+light_specular = 1.0
+omni_range = 3.0
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_oh5ux")
 
@@ -171,5 +179,4 @@ target_position = Vector3(0, 0, 4)
 debug_shape_custom_color = Color(0.39432, 0.72, 0.2952, 1)
 debug_shape_thickness = 4
 
-[connection signal="body_entered" from="Drone/HurtArea" to="." method="_on_hurt_area_body_entered"]
 [connection signal="link_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_link_reached"]

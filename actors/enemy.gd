@@ -39,6 +39,7 @@ var knockback: Vector3
 @onready var playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
 @onready var help_range: Area3D = $HelpRange
 @onready var ray_cast: RayCast3D = $RayCast
+@onready var headlight: OmniLight3D = %Headlight
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
@@ -128,17 +129,19 @@ func play_attack() -> void:
 	playback.travel("attack")
 	
 func attack() -> void:
-	print('ATTAAAAACK')
+	#print('ATTAAAAACK')
 	if not player: return
 	player.hitpoints -= weapon_damage
 	
 	
 func call_for_help() -> void:
-	print('HHHALP')
+	#print('HHHALP')
 	for body in help_range.get_overlapping_bodies():
 		if body is Enemy:
 			if test_los_with(body):
 				body.receive_call_for_help()
+	var tween: Tween = create_tween()
+	tween.tween_property(headlight, "light_color", Color(1.2, 0.05, 0.05), 0.5)
 
 func receive_call_for_help() -> void:
 	if !provoked: 
@@ -152,8 +155,3 @@ func _on_navigation_agent_3d_link_reached(details: Dictionary) -> void:
 	is_linking = true
 	await get_tree().create_timer(2).timeout
 	is_linking = false
-
-
-func _on_hurt_area_body_entered(body: Node3D) -> void:
-	print('%s collided with %s' % [name, body.name])
-	pass # Replace with function body.

@@ -39,7 +39,7 @@ func shoot() -> void:
 	ammo_handler.use_ammo(ammo_type)
 	if muzzle_flash: muzzle_flash.restart()
 	cooldown_timer.start(1.0 / shoot_rate)
-	print('shootd at %s ' % [ray_cast.get_collider()])
+	#print('shootd at %s ' % [ray_cast.get_collider()])
 	weapon_mesh.position.z += recoil
 	var collider:  = ray_cast.get_collider()
 	if not collider: return

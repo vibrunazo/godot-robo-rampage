@@ -25,7 +25,7 @@ var hitpoints: float = max_hitpoints:
 		hitpoints = value
 		if hitpoints <= 0 and game_over_menu:
 			game_over_menu.game_over()
-		print('health: %s' % [hitpoints])
+		#print('health: %s' % [hitpoints])
 		
 ## How much mouse has moved last frame, adjusted to how much camera should move
 var mouse_motion: Vector2 = Vector2.ZERO

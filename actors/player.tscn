@@ -115,7 +115,7 @@ remote_path = NodePath("../../../SubViewportContainer/SubViewport/WeaponCamera")
 [node name="SpotLight3D" type="SpotLight3D" parent="CameraPivot/SmoothCamera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 light_color = Color(0.88466, 0.89, 0.8099, 1)
-light_energy = 3.0
+light_energy = 4.0
 light_indirect_energy = 2.0
 spot_range = 20.0
 spot_attenuation = 0.5
